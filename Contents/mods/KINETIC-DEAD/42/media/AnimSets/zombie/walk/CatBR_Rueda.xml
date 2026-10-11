@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>CatBR_Rueda</m_Name>
+    <m_AnimName>Zombie_Walk</m_AnimName>
+    <m_BlendTime>0.20</m_BlendTime>
+    <m_SpeedScale>0.85</m_SpeedScale>
+    <m_randomAdvanceFraction>0.10</m_randomAdvanceFraction>
+    <m_Conditions x_name="75ea167e-11bb-490b-986f-9d0ea312bb34">
+        <m_Name>CatBRRueda</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_Value>true</m_Value>
+    </m_Conditions>
+</animNode>

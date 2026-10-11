@@ -1,0 +1,14 @@
+module Base
+{
+    item VHS_Animado
+    {
+        DisplayCategory = Entertainment,
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = Animado,
+        MediaCategory = Animado-VHS,
+        WorldStaticModel = VHSBox3,
+        Tags = base:ignorezombiedensity;base:isfirefuel,
+        FireFuelRatio = 0.25,
+    }
+}

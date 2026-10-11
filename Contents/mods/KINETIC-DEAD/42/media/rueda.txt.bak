@@ -1,0 +1,16 @@
+version = 0
+settings
+{
+    packFileName = texturepacks/rueda.pack
+    outputImageSize = 2048,2048
+    scale50 = false
+    inputImageDirectory
+    {
+        path = ../../../Pitstop/RescatePitstop/Tiles/2x/rueda
+        imagesAreTilesheets = true
+    }
+    tileDef
+    {
+        path = ../rueda_tiledefinitions.tiles
+    }
+}

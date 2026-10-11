@@ -1,0 +1,278 @@
+﻿COMANDOS DE PRUEBA — KINETIC-DEAD
+Project Zomboid, consola Lua del depurador
+==========================================
+
+Requisitos
+----------
+- Inicia una partida con KINETIC-DEAD activado.
+- Abre la consola Lua del depurador; no pegues estos comandos en el chat.
+- Ejecuta los bloques por separado, salvo el bloque final que es una preparación completa.
+- Haz la prueba cerca de donde quieras construir la rueda. El zombi de prueba aparecerá junto al jugador.
+- La integración de cautiverio usa CatBR del mod. El menú "Meter dentro de rueda" requiere que la receta/ conocimiento esté aprendido y que exista un zombi amarrado cerca de la rueda.
+
+1) JUGADOR E INVENTARIO
+-----------------------
+
+Obtener jugador:
+p = getPlayer()
+
+Ver coordenadas:
+print(p:getX(), p:getY(), p:getZ())
+
+Invocar cuerda:
+p:getInventory():AddItem("Base.Rope")
+
+Invocar martillo:
+p:getInventory():AddItem("Base.Hammer")
+
+Invocar los materiales de una rueda (6 tablones, 4 clavos y 1 colchón):
+for i = 1, 6 do p:getInventory():AddItem("Base.Plank") end
+for i = 1, 4 do p:getInventory():AddItem("Base.Nails") end
+p:getInventory():AddItem("Base.Mattress")
+
+Invocar la revista para fabricar VHS:
+p:getInventory():AddItem("Base.CrearCassets")
+
+2) VHS DE PRUEBA CON EL RECORDED MEDIA CORRECTO
+------------------------------------------------
+
+Estos ejemplos asignan tanto el objeto VHS como el registro del relato. Las categorías coinciden con los tipos propios del mod.
+
+Preparar la función:
+KD_DarVHS = function(itemType, mediaId)
+    local p = getPlayer()
+    local rm = getZomboidRadio():getRecordedMedia()
+    local data = rm:getMediaData(mediaId)
+    if not data then
+        print("[KD] No se encontró el registro: " .. tostring(mediaId))
+        return nil
+    end
+    local item = p:getInventory():AddItem(itemType)
+    if item then
+        item:setRecordedMediaData(data)
+        print("[KD] VHS creada: " .. tostring(mediaId) .. " [" .. tostring(data:getCategory()) .. "]")
+    end
+    return item
+end
+
+VHS Logan, episodio 1 (captura):
+KD_DarVHS("Base.VHS_Logan", "CazadoresMuertos01")
+
+VHS Logan, episodio 2 (aprendizaje de rueda):
+KD_DarVHS("Base.VHS_Logan", "CazadoresMuertos02")
+
+VHS Logan mítica/rara:
+KD_DarVHS("Base.VHS_LoganC", "CazadoresMuertos18")
+
+VHS Ruiz:
+KD_DarVHS("Base.VHS_Ruiz", "DiariosRuiz01")
+
+VHS Thorne:
+KD_DarVHS("Base.VHS_Thorne", "BitacorasThorne01")
+
+VHS animada:
+KD_DarVHS("Base.VHS_Animado", "boondocks")
+
+Verificar el registro y su categoría:
+local d = getZomboidRadio():getRecordedMedia():getMediaData("CazadoresMuertos18"); print(d and d:getId(), d and d:getCategory())
+
+Ver cuántos relatos hay en la categoría Logan:
+print(getZomboidRadio():getRecordedMedia():getAllMediaForCategory("Logan-VHS"):size())
+
+3) APRENDIZAJE DE RECETA PARA PRUEBA
+------------------------------------
+
+Marcar la rueda como aprendida y añadir la receta:
+p = getPlayer()
+p:getModData().KineticDeadKnowledge = p:getModData().KineticDeadKnowledge or {}
+p:getModData().KineticDeadKnowledge.captura = true
+p:getModData().KineticDeadKnowledge.rueda = true
+p:getKnownRecipes():add("Rueda_Estructura")
+p:getKnownRecipes():add("Base.Rueda_Estructura")
+
+La receta registrada en el mod se llama Rueda_Estructura. Con los materiales del apartado 1, constrúyela desde el menú de construcción del juego. Eso crea la estructura con sus tiles y colisión válidos.
+
+4) INVOCAR UN ZOMBI Y PREPARARLO COMO AMARRADO DE PRUEBA
+-------------------------------------------------------
+
+Invocar un zombi a dos casillas del jugador:
+p = getPlayer()
+local x, y, z = math.floor(p:getX() + 2), math.floor(p:getY()), math.floor(p:getZ())
+addZombiesInOutfit(x, y, z, 1, nil, 0)
+
+Cuando el zombi aparezca, ejecutar este bloque para buscar uno cercano y registrarlo como amarrado para la prueba del menú:
+p = getPlayer()
+local cx, cy, cz = math.floor(p:getX()), math.floor(p:getY()), math.floor(p:getZ())
+local zb = nil
+for dx = -6, 6 do
+    for dy = -6, 6 do
+        local sq = getCell():getGridSquare(cx + dx, cy + dy, cz)
+        local movs = sq and sq:getMovingObjects() or nil
+        if movs then
+            for i = 0, movs:size() - 1 do
+                local obj = movs:get(i)
+                if obj and instanceof(obj, "IsoZombie") and not obj:isDead() then
+                    zb = obj
+                    break
+                end
+            end
+        end
+        if zb then break end
+    end
+    if zb then break end
+end
+if zb then
+    local x, y, z = math.floor(zb:getX()), math.floor(zb:getY()), math.floor(zb:getZ())
+    local id = CatBR.idAmarra(x, y, z)
+    CatBR.dados().amarras[id] = { x=x, y=y, z=z, por="TEST", rueda=false }
+    zb:getModData().CatBR = zb:getModData().CatBR or {}
+    zb:getModData().CatBR.dominado = true
+    zb:getModData().CatBR.amarraId = id
+    zb:setUseless(true)
+    if isClient() then
+        sendClientCommand(p, "CativeiroBR", "Amarrar", { x=x, y=y, z=z, rueda=false })
+    else
+        ModData.transmit("CativeiroBR")
+    end
+    print("[KD] Zombi amarrado para prueba: " .. id)
+else
+    print("[KD] No se encontró un zombi. Invoca uno, espera un momento y repite este bloque.")
+end
+
+Con la rueda construida cerca del jugador y el zombi amarrado cerca de ella, haz clic derecho en la rueda y elige "Meter dentro de rueda". El menú normal necesita encontrar el registro de amarra y al mismo zombi en las casillas cercanas.
+
+5) ANIMACIÓN Y AJUSTE DE POSICIÓN
+---------------------------------
+
+Encender ruedas hasta 20 casillas, velocidad normal:
+ToggleRuedasArea(20, true)
+
+Encender ruedas cercanas rápido:
+ToggleRuedasArea(20, true, 80)
+
+Encender ruedas cercanas lento:
+ToggleRuedasArea(20, true, 350)
+
+Apagar ruedas cercanas:
+ToggleRuedasArea(20, false)
+
+Ajustar el desplazamiento del cautivo (ejemplo: dos casillas en X):
+KineticDeadSetWheelCaptiveOffset(2, 0)
+
+Ver el desplazamiento actual:
+print(AnimRueda.OffsetCautivo.x, AnimRueda.OffsetCautivo.y)
+
+Arrancar la animación de la rueda cercana al jugador:
+KineticDeadStartWheelNearSquare(getPlayer():getCurrentSquare(), nil)
+
+DETENER LAS RUEDAS
+------------------
+ToggleRuedasArea(20, false)
+
+6) COMANDO ÚNICO FINAL: PREPARAR TODO EL ESCENARIO DE PRUEBA
+------------------------------------------------------------
+
+Pega el bloque completo. Aprende la receta, activa el conocimiento de captura y rueda, entrega materiales, cuerda, herramientas y TODOS los registros de VHS encontrados en las cinco categorías del mod (Logan, Logan mítico, Ruiz, Thorne y animadas). También invoca un zombi y lo registra automáticamente como amarrado cuando aparece. Construye la rueda cerca del jugador y luego usa "Meter dentro de rueda".
+
+KD_PrepararPrueba = function()
+    local p = getPlayer()
+    if not p then print("[KD] No se encontró al jugador local."); return end
+
+    -- Desbloqueos de prueba: receta y menús de cautiverio/rueda.
+    local conocimiento = p:getModData().KineticDeadKnowledge or {}
+    p:getModData().KineticDeadKnowledge = conocimiento
+    conocimiento.captura = true
+    conocimiento.rueda = true
+    pcall(function() p:getKnownRecipes():add("Rueda_Estructura") end)
+    pcall(function() p:getKnownRecipes():add("Base.Rueda_Estructura") end)
+
+    local inv = p:getInventory()
+    for i = 1, 6 do inv:AddItem("Base.Plank") end
+    for i = 1, 4 do inv:AddItem("Base.Nails") end
+    inv:AddItem("Base.Mattress")
+    inv:AddItem("Base.Hammer")
+    inv:AddItem("Base.Rope")
+    inv:AddItem("Base.CrearCassets")
+
+    -- Un VHS por cada registro de cada categoría, con el objeto correcto.
+    local rm = getZomboidRadio():getRecordedMedia()
+    local categorias = {
+        { "Logan-VHS", "Base.VHS_Logan" },
+        { "LoganC-VHS", "Base.VHS_LoganC" },
+        { "Ruiz-VHS", "Base.VHS_Ruiz" },
+        { "Thorne-VHS", "Base.VHS_Thorne" },
+        { "Animado-VHS", "Base.VHS_Animado" },
+    }
+    local totalVHS = 0
+    for _, serie in ipairs(categorias) do
+        local lista = rm:getAllMediaForCategory(serie[1])
+        if lista then
+            for i = 0, lista:size() - 1 do
+                local data = lista:get(i)
+                if data then
+                    local item = inv:AddItem(serie[2])
+                    if item then
+                        item:setRecordedMediaData(data)
+                        totalVHS = totalVHS + 1
+                    end
+                end
+            end
+        end
+    end
+
+    -- Invoca un zombi a dos casillas del jugador y lo registra como amarrado
+    -- cuando aparezca. Así el menú de la rueda podrá encontrarlo.
+    local x, y, z = math.floor(p:getX() + 2), math.floor(p:getY()), math.floor(p:getZ())
+    addZombiesInOutfit(x, y, z, 1, nil, 0)
+    local intentos = 0
+    local alAparecer
+    alAparecer = function()
+        intentos = intentos + 1
+        for dx = -1, 1 do
+            for dy = -1, 1 do
+                local sq = getCell():getGridSquare(x + dx, y + dy, z)
+                local movs = sq and sq:getMovingObjects() or nil
+                if movs then
+                    for i = 0, movs:size() - 1 do
+                        local zb = movs:get(i)
+                        if zb and instanceof(zb, "IsoZombie") and not zb:isDead()
+                            and IsoUtils.DistanceTo(zb:getX(), zb:getY(), x + 0.5, y + 0.5) <= 1.5 then
+                            local zx, zy, zz = math.floor(zb:getX()), math.floor(zb:getY()), math.floor(zb:getZ())
+                            local id = CatBR.idAmarra(zx, zy, zz)
+                            CatBR.dados().amarras[id] = { x=zx, y=zy, z=zz, por="TEST", rueda=false }
+                            zb:getModData().CatBR = zb:getModData().CatBR or {}
+                            zb:getModData().CatBR.dominado = true
+                            zb:getModData().CatBR.amarraId = id
+                            zb:setUseless(true)
+                            if isClient() then
+                                sendClientCommand(p, "CativeiroBR", "Amarrar", { x=zx, y=zy, z=zz, rueda=false })
+                            else
+                                ModData.transmit("CativeiroBR")
+                            end
+                            Events.OnTick.Remove(alAparecer)
+                            print("[KD] Zombi de prueba amarrado: " .. id)
+                            return
+                        end
+                    end
+                end
+            end
+        end
+        if intentos >= 120 then
+            Events.OnTick.Remove(alAparecer)
+            print("[KD] No se detectó el zombi a tiempo. Invoca otro y usa el bloque de amarre del apartado 4.")
+        end
+    end
+    Events.OnTick.Add(alAparecer)
+
+    p:setHaloNote("Preparando rueda, VHS y zombi de prueba", 0, 255, 0, 400)
+    print("[KD] Preparación iniciada. VHS asignadas: " .. totalVHS)
+end
+
+KD_PrepararPrueba()
+
+Notas
+-----
+- El comando final prepara inventario, VHS, aprendizaje y zombi; cuando detecta al zombi recién invocado, lo registra automáticamente como amarrado para que el menú pueda encontrarlo. La construcción y la acción "Meter dentro de rueda" se realizan en el menú del juego para probar la interacción real.
+- El bloque de amarre del apartado 4 es un atajo de depuración: registra el zombi directamente como amarrado y no consume la cuerda. Para probar el consumo de cuerda y la captura normal, usa las acciones del mod.
+- Si el VHS animado o una categoría no devuelve registros, revisa que el mod haya cargado recorded_media.lua y vuelve a iniciar la partida.
+

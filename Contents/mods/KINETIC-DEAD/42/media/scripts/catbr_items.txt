@@ -1,0 +1,62 @@
+module Base
+{
+    imports
+    {
+        Base
+    }
+
+    item CatBR_Corda
+    {
+        DisplayName = Corda de Conducao (visual),
+        DisplayCategory = Material,
+        ItemType = base:normal,
+        Weight = 0,
+        Icon = Rope2,
+        StaticModel = Rope_Looped,
+        WorldStaticModel = Rope_Looped,
+    }
+}
+
+/*
+module Base
+{
+    item CatBR_CotoL
+    {
+        DisplayName = Coto de Braco Esquerdo (visual),
+        DisplayCategory = Material,
+        ItemType = base:Clothing,
+        hidden = true,
+        ClothingItem = CatBR_Coto_L,
+        BodyLocation = TorsoExtra,
+        Weight = 0,
+        CanHaveHoles = false,
+        BloodLocation = UpperArms;UpperBody,
+    }
+
+    item CatBR_CotoR
+    {
+        DisplayName = Coto de Braco Direito (visual),
+        DisplayCategory = Material,
+        ItemType = base:Clothing,
+        hidden = true,
+        ClothingItem = CatBR_Coto_R,
+        BodyLocation = TorsoExtra,
+        Weight = 0,
+        CanHaveHoles = false,
+        BloodLocation = UpperArms;UpperBody,
+    }
+
+    item CatBR_SemBracos
+    {
+        DisplayName = Bracos Cortados (visual),
+        DisplayCategory = Material,
+        ItemType = base:Clothing,
+        hidden = true,
+        ClothingItem = CatBR_SemBracos,
+        BodyLocation = TorsoExtra,
+        Weight = 0,
+        CanHaveHoles = false,
+        BloodLocation = UpperArms;UpperBody,
+    }
+}
+*/

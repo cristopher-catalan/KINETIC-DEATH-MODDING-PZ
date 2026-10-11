@@ -1,0 +1,17 @@
+{
+    "IGUI_CatBR_Dominado": "Zombi sometido.",
+    "IGUI_CatBR_Vem": "¡Ven, desgraciado!",
+    "IGUI_CatBR_FicaAi": "Quédate ahí.",
+    "IGUI_CatBR_Amarrado": "Atado.",
+    "IGUI_CatBR_Calma": "Tranquilo...",
+    "IGUI_CatBR_Pega": "¡Atrápalos, zombi!",
+    "IGUI_CatBR_Corte": "¡Ya no me muerdes más!",
+    "IGUI_CatBR_Corre": "¡CORRE!",
+    "IGUI_CatBR_PrecisoCorda": "Necesito una cuerda.",
+    "IGUI_CatBR_CordaEscapou": "¡La cuerda se soltó!",
+    "IGUI_CatBR_Recuperei": "Recuperé la carga del zombi (%1)",
+    "IGUI_KineticDead_WheelStopped": "Rueda detenida.",
+    "IGUI_KineticDead_WheelRunning": "Rueda en marcha.",
+    "IGUI_KineticDead_WheelSlowMode": "Velocidad lenta.",
+    "IGUI_KineticDead_WheelFastMode": "Velocidad rápida."
+}

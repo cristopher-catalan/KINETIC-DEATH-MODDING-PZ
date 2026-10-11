@@ -1,0 +1,12 @@
+module Base
+{
+    xuiSkin default
+    {
+        entity ES_Rueda_Estructura
+        {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = RuedaEstructura,
+            Icon = build_rueda,
+        }
+    }
+}

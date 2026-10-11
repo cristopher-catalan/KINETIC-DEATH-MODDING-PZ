@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clothingItem>
+    <m_MaleModel>CatBRCoto\Amputation_Left_UpperArm_Male</m_MaleModel>
+    <m_FemaleModel>CatBRCoto\Amputation_Left_UpperArm_Female</m_FemaleModel>
+    <m_GUID>8ab2dbee-8935-5b19-a2d8-62f8006d45c5</m_GUID>
+    <m_Static>false</m_Static>
+    <m_AllowRandomHue>false</m_AllowRandomHue>
+    <m_AllowRandomTint>false</m_AllowRandomTint>
+    <m_Masks>3</m_Masks>
+    <m_Masks>4</m_Masks>
+    <textureChoices>CatBRCoto\z_skin01_l1</textureChoices>
+    <textureChoices>CatBRCoto\z_skin01_l2</textureChoices>
+    <textureChoices>CatBRCoto\z_skin01_l3</textureChoices>
+    <textureChoices>CatBRCoto\z_skin02_l1</textureChoices>
+    <textureChoices>CatBRCoto\z_skin02_l2</textureChoices>
+    <textureChoices>CatBRCoto\z_skin02_l3</textureChoices>
+    <textureChoices>CatBRCoto\z_skin03_l1</textureChoices>
+    <textureChoices>CatBRCoto\z_skin03_l2</textureChoices>
+    <textureChoices>CatBRCoto\z_skin03_l3</textureChoices>
+    <textureChoices>CatBRCoto\z_skin04_l1</textureChoices>
+    <textureChoices>CatBRCoto\z_skin04_l2</textureChoices>
+    <textureChoices>CatBRCoto\z_skin04_l3</textureChoices>
+</clothingItem>

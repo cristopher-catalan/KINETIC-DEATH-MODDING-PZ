@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clothingItem>
+    <m_MaleModel></m_MaleModel>
+    <m_FemaleModel></m_FemaleModel>
+    <m_GUID>2d74d0b4-73ce-5a1c-907c-d1063af8e99a</m_GUID>
+    <m_Static>false</m_Static>
+    <m_AllowRandomHue>false</m_AllowRandomHue>
+    <m_AllowRandomTint>false</m_AllowRandomTint>
+    <m_AttachBone></m_AttachBone>
+    <m_BaseTextures>CatBR\CatBR_Blank</m_BaseTextures>
+    <!-- mascaras vanilla de segmento do corpo:
+         3 = antebraco E, 4 = mao E, 5 = antebraco D, 6 = mao D
+         (mapeamento confirmado no The Only Cure; esconder os 4
+         segmentos deixa o zumbi com cotos no cotovelo) -->
+    <m_Masks>3</m_Masks>
+    <m_Masks>4</m_Masks>
+    <m_Masks>5</m_Masks>
+    <m_Masks>6</m_Masks>
+</clothingItem>

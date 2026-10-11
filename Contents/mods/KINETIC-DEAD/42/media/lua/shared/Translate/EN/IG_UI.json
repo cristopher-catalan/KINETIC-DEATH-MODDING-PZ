@@ -1,0 +1,17 @@
+{
+    "IGUI_CatBR_Dominado": "Zombie subdued.",
+    "IGUI_CatBR_Vem": "Come on, you bastard!",
+    "IGUI_CatBR_FicaAi": "Stay there.",
+    "IGUI_CatBR_Amarrado": "Tied up.",
+    "IGUI_CatBR_Calma": "Easy now...",
+    "IGUI_CatBR_Pega": "Get them, zombie!",
+    "IGUI_CatBR_Corte": "Now you can't bite me anymore!",
+    "IGUI_CatBR_Corre": "RUN!",
+    "IGUI_CatBR_PrecisoCorda": "I need a rope.",
+    "IGUI_CatBR_CordaEscapou": "The rope slipped!",
+    "IGUI_CatBR_Recuperei": "Recovered the zombie cargo (%1)",
+    "IGUI_KineticDead_WheelStopped": "Wheel stopped.",
+    "IGUI_KineticDead_WheelRunning": "Wheel running.",
+    "IGUI_KineticDead_WheelSlowMode": "Slow mode.",
+    "IGUI_KineticDead_WheelFastMode": "Fast mode."
+}

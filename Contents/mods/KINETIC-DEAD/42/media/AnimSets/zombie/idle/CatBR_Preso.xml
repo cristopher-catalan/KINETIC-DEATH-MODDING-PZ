@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>CatBR_Preso</m_Name>
+	<m_AnimName>Bob_HandsCuffed</m_AnimName>
+	<m_BlendTime>0.35</m_BlendTime>
+	<m_SpeedScale>0.50</m_SpeedScale>
+	<m_Conditions x_name="c47b0001-aaaa-4bbb-8ccc-0123456789ab">
+		<m_Name>CatBRPreso</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_Value>true</m_Value>
+	</m_Conditions>
+</animNode>

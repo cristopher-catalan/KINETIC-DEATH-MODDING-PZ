@@ -1,0 +1,17 @@
+module Base
+{
+    item CrearCassets
+    {
+        DisplayCategory = RecipeResource,
+        ItemType = base:literature,
+        Weight = 0.1,
+        Icon = RecetaVHS,
+        BoredomChange = -10,
+        StressChange = -15,
+        LearnedRecipes = HacerVHS_Receta,
+        StaticModel = Magazine,
+        WorldStaticModel = MagazineElec3Ground,
+        Tags = base:magazine,
+        OnCreate = ItemCodeOnCreate.onCreateRecipeMagazine,
+    }
+}

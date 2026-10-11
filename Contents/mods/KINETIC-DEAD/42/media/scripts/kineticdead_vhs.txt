@@ -1,0 +1,47 @@
+module Base
+{
+    item VHS_Logan
+    {
+        DisplayCategory = Entertainment,
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = logan,
+        MediaCategory = Logan-VHS,
+        WorldStaticModel = VHSBox3,
+        Tags = base:ignorezombiedensity;base:isfirefuel,
+        FireFuelRatio = 0.25,
+    }
+    item VHS_LoganC
+    {
+        DisplayCategory = Entertainment,
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = loganc,
+        MediaCategory = LoganC-VHS,
+        WorldStaticModel = VHSBox3,
+        Tags = base:ignorezombiedensity;base:isfirefuel,
+        FireFuelRatio = 0.25,
+    }
+    item VHS_Ruiz
+    {
+        DisplayCategory = Entertainment,
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = ruiz,
+        MediaCategory = Ruiz-VHS,
+        WorldStaticModel = VHSBox3,
+        Tags = base:ignorezombiedensity;base:isfirefuel,
+        FireFuelRatio = 0.25,
+    }
+    item VHS_Thorne
+    {
+        DisplayCategory = Entertainment,
+        ItemType = base:normal,
+        Weight = 0.5,
+        Icon = thorne,
+        MediaCategory = Thorne-VHS,
+        WorldStaticModel = VHSBox3,
+        Tags = base:ignorezombiedensity;base:isfirefuel,
+        FireFuelRatio = 0.25,
+    }
+}

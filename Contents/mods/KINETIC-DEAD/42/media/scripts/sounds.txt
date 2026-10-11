@@ -1,0 +1,66 @@
+module Base
+{
+    sound boondocks
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/boondocks.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound noticiero
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/noticiero.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound joven
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/joven.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound walkin
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/walkin.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound trailer
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/trailer.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound ricardo_milos
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/ricardo_milos.ogg, 
+            volume = 1.00,
+        }
+    }
+    sound rickroll 
+    {
+        category = default,
+        clip
+        {
+            file = media/sound/rickroll.ogg, 
+            volume = 1.00,
+        }
+    }
+}

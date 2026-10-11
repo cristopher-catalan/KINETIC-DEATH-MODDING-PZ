@@ -1,0 +1,9 @@
+ItemName_ES = {
+
+    ItemName_Base.VHS_Animado = "Cinta VHS Random",
+
+    ItemName_Base.VHS_Logan = "VHS de Logan: Cazadores de Muertos",
+    ItemName_Base.VHS_LoganC = "VHS mítico de Logan C: Singularidad",
+    ItemName_Base.VHS_Ruiz = "VHS de Ruiz: Diarios de supervivencia",
+    ItemName_Base.VHS_Thorne = "VHS de Thorne: Protocolo Caído",
+}

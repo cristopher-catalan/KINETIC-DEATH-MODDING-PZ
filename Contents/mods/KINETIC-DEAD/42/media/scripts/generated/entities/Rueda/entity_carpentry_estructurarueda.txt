@@ -1,0 +1,49 @@
+module Base
+{
+    entity Rueda_Estructura
+    {
+        component UiConfig
+        {
+            xuiSkin = default,
+            entityStyle = ES_Rueda_Estructura,
+            uiEnabled = false,
+        }
+        component SpriteConfig
+        {
+            face S
+            {
+                layer
+                { 
+                    row = rueda_2,
+                    row = rueda_1, 
+                    row = rueda_0, 
+                }
+            }
+            face E
+            {
+                layer
+                {
+                    row = rueda_3 rueda_4 rueda_5,
+                }
+            }
+        }
+        
+        component CraftRecipe
+        {
+            timedAction = BuildWallHammer,
+            time = 50,
+            SkillRequired = Woodwork:1,
+            NeedToBeLearn = true,
+            xpAward = Woodwork:10,
+            category = Furniture,
+            Tags = Carpentry;Furniture,
+            inputs
+            {
+                item 1 tags[base:hammer] mode:keep flags[Prop1;MayDegradeVeryLight],
+                item 6 [Base.Plank],
+                item 4 [Base.Nails],
+                item 1 [Base.Mattress],
+            }
+        }
+    }
+}

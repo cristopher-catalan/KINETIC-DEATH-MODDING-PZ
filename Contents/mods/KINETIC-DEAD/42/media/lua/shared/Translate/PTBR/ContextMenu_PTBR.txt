@@ -1,0 +1,17 @@
+ContextMenu_PTBR = {
+	ContextMenu_CatBR_Dominar = "Dominar zumbi (usa algema/corda)",
+	ContextMenu_CatBR_DominarTip = "Chegue AGACHADO (stealth) a 1 tile do zumbi",
+	ContextMenu_CatBR_Conduzir = "Conduzir zumbi (corda)",
+	ContextMenu_CatBR_SoltarCorda = "Soltar a corda do zumbi",
+	ContextMenu_CatBR_AmarrarAncora = "Amarrar zumbi aqui (árvore/grade)",
+	ContextMenu_CatBR_Amarrar = "Amarrar zumbi aqui",
+	ContextMenu_CatBR_Acalmar = "Acalmar zumbi (amarrado)",
+	ContextMenu_CatBR_Enfurecer = "Enfurecer zumbi",
+	ContextMenu_CatBR_Cortar = "Cortar os braços",
+	ContextMenu_CatBR_CortarTip = "Precisa de faca ou machado NA MÃO",
+	ContextMenu_CatBR_ColocarMochila = "Colocar mochila no zumbi",
+	ContextMenu_CatBR_TirarMochila = "Tirar mochila do zumbi",
+	ContextMenu_CatBR_Libertar = "Soltar Zumbi!",
+	ContextMenu_CatBR_ZumbiCativo = "Zumbi cativo",
+	ContextMenu_CatBR_MochilaZumbi = "Mochila do zumbi",
+}

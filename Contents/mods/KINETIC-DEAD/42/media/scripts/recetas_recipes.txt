@@ -1,0 +1,32 @@
+module Base
+{
+   	craftRecipe HacerVHS_Receta
+	{
+        timedAction = Making,
+		time = 10,
+        Tags = InHandCraft,
+        category = Kinetic,
+        SkillRequired = Woodwork:4;Tailoring:4,
+        /*NeedToBeLearn = true,*/
+        xpAward = Woodwork:4000,
+		inputs
+		{
+            item 1 [Base.VHS_Home] flags[Prop2] mode:destroy,
+
+            /*--Weird tag related bug was introduced in B42 breaking recipes*/
+
+            /*--item 1 tags[base:glue] flags[Prop1],*/
+            item 3 [Base.Notebook], /*flags[Prop1],*/
+
+            /*--item 3 [Base.LeatherStrips;Base.LeatherStripsDirty] mode:destroy,*/
+
+            /*--item 1 tags[base:thread;base:twine;base:heavythread],*/
+            item 1 [Base.Needle;Base.Needle_Bone] flags[Prop1],
+		}
+
+		outputs
+		{
+			item 1 Base.VHS_Animado,
+		}
+	}
+}

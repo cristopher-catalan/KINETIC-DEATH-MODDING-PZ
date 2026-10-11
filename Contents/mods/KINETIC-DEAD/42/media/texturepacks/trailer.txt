@@ -1,0 +1,16 @@
+version = 0
+settings
+{
+    packFileName = trailer.pack
+    outputImageSize = 2048,2048
+    scale50 = false
+    inputImageDirectory
+    {
+        path = ../textures/trailer
+        imagesAreTilesheets = false
+    }
+    tileDef
+    {
+        path = ../../../../../../../../Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/newtiledefinitions.tiles
+    }
+}

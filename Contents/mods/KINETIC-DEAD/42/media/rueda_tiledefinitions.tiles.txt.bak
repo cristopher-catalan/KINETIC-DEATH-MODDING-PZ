@@ -1,0 +1,39 @@
+version = 1
+tileset
+{
+    file = rueda
+    size = 8,10
+    id = 1
+    // rueda_0
+    tile
+    {
+        xy = 0,0
+        Facing = S
+        GroupName = rueda
+        IsMoveAble = 
+        SpriteGridPos = 0,2
+        solid = 
+    }
+    // rueda_1
+    tile
+    {
+        xy = 1,0
+        Facing = S
+        GroupName = rueda
+        IsMoveAble = 
+        SpriteGridPos = 0,1
+        Surface = 90
+        solid = 
+    }
+    // rueda_2
+    tile
+    {
+        xy = 2,0
+        Facing = S
+        GroupName = rueda
+        IsMoveAble = 
+        SpriteGridPos = 0,0
+        Surface = 90
+        solid = 
+    }
+}

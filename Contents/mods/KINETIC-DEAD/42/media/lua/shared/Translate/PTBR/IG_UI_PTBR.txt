@@ -1,0 +1,13 @@
+IG_UI_PTBR = {
+	IGUI_CatBR_Dominado = "Zumbi dominado.",
+	IGUI_CatBR_Vem = "Vem desgraçado!",
+	IGUI_CatBR_FicaAi = "Fica aí.",
+	IGUI_CatBR_Amarrado = "Amarrado.",
+	IGUI_CatBR_Calma = "Calma aí...",
+	IGUI_CatBR_Pega = "Pega eles zumbi!",
+	IGUI_CatBR_Corte = "Agora você não me morde mais!",
+	IGUI_CatBR_Corre = "CORRE!",
+	IGUI_CatBR_PrecisoCorda = "Preciso de uma corda.",
+	IGUI_CatBR_CordaEscapou = "A corda escapou!",
+	IGUI_CatBR_Recuperei = "Recuperei a carga do zumbi (%1)",
+}

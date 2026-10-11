@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fileGuidTable>
+    <files>
+        <path>media/clothing/clothingItems/CatBR_SemBracos.xml</path>
+        <guid>2d74d0b4-73ce-5a1c-907c-d1063af8e99a</guid>
+    </files>
+    <files>
+        <path>media/clothing/clothingItems/CatBR_Coto_L.xml</path>
+        <guid>8ab2dbee-8935-5b19-a2d8-62f8006d45c5</guid>
+    </files>
+    <files>
+        <path>media/clothing/clothingItems/CatBR_Coto_R.xml</path>
+        <guid>fbe8fc48-7399-554f-9cf9-eb221dda28db</guid>
+    </files>
+</fileGuidTable>

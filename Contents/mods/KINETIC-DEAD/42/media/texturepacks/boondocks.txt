@@ -1,0 +1,12 @@
+version = 0
+settings
+{
+    packFileName = boondocks.pack
+    outputImageSize = 2048,2048
+    scale50 = false
+    inputImageDirectory
+    {
+        path = ../textures/boondocks
+        imagesAreTilesheets = false
+    }
+}

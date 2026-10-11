@@ -1,0 +1,9 @@
+name=Kinetic Dead - Ronald integrado
+id=KineticDead_Ronald
+description=Relatos VHS, aprendizaje progresivo, rueda cinetica y cautiverio de zombis.
+poster=poster.png
+icon=icon.png
+modversion=1.0
+author=wiadeuserrant
+pack=rueda
+tiledef=rueda_tiledefinitions 8188

@@ -1,0 +1,16 @@
+version = 0
+settings
+{
+    packFileName = walkin.pack
+    outputImageSize = 2048,2048
+    scale50 = false
+    inputImageDirectory
+    {
+        path = ../textures/walkin
+        imagesAreTilesheets = true
+    }
+    tileDef
+    {
+        path = ../../../../../../../../Program Files (x86)/Steam/steamapps/common/ProjectZomboid/media/newtiledefinitions.tiles
+    }
+}

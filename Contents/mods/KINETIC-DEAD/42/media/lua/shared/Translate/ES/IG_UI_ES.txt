@@ -1,0 +1,16 @@
+IG_UI_ES = {
+	IGUI_CatBR_Dominado = "Zombi sometido.",
+	IGUI_CatBR_Vem = "¡Ven, desgraciado!",
+	IGUI_CatBR_FicaAi = "Quédate ahí.",
+	IGUI_CatBR_Amarrado = "Atado.",
+	IGUI_CatBR_Calma = "Tranquilo...",
+	IGUI_CatBR_Pega = "¡Atrápalos, zombi!",
+	IGUI_CatBR_Corte = "¡Ya no me muerdes más!",
+	IGUI_CatBR_Corre = "¡CORRE!",
+	IGUI_CatBR_PrecisoCorda = "Necesito una cuerda.",
+	IGUI_CatBR_CordaEscapou = "¡La cuerda se soltó!",
+	IGUI_CatBR_Recuperei = "Recuperé la carga del zombi (%1)",
+    IGUI_KineticDead_LearnedCapture = "Aprendiste a someter y atar zombis.",
+    IGUI_KineticDead_LearnedWheel = "Aprendiste a construir la rueda cinética.",
+    IGUI_KineticDead_ZombieInWheel = "Zombi asegurado en el centro de la rueda.",
+}

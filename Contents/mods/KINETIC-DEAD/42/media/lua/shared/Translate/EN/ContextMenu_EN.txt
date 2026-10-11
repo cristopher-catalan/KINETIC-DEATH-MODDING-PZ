@@ -1,0 +1,17 @@
+ContextMenu_EN = {
+	ContextMenu_CatBR_Dominar = "Subdue zombie (uses cuffs/rope)",
+	ContextMenu_CatBR_DominarTip = "Approach CROUCHED (stealth) within 1 tile of the zombie",
+	ContextMenu_CatBR_Conduzir = "Lead zombie (rope)",
+	ContextMenu_CatBR_SoltarCorda = "Let go of the rope",
+	ContextMenu_CatBR_AmarrarAncora = "Tie zombie here (tree/fence)",
+	ContextMenu_CatBR_Amarrar = "Tie zombie here",
+	ContextMenu_CatBR_Acalmar = "Calm zombie (tied)",
+	ContextMenu_CatBR_Enfurecer = "Enrage zombie",
+	ContextMenu_CatBR_Cortar = "Cut off the arms",
+	ContextMenu_CatBR_CortarTip = "Requires a knife or axe IN HAND",
+	ContextMenu_CatBR_ColocarMochila = "Put backpack on zombie",
+	ContextMenu_CatBR_TirarMochila = "Take backpack from zombie",
+	ContextMenu_CatBR_Libertar = "Release zombie!",
+	ContextMenu_CatBR_ZumbiCativo = "Captive zombie",
+	ContextMenu_CatBR_MochilaZumbi = "Zombie backpack",
+}

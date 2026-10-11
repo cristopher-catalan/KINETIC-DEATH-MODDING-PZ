@@ -1,0 +1,492 @@
+--.GENERADOR DE ITEM EN CONTENEDOR
+
+local player = getPlayer()
+local px = math.floor(player:getX())
+local py = math.floor(player:getY())
+local pz = math.floor(player:getZ())
+local cell = getWorld():getCell()
+
+local targetContainer = nil
+local containerType = "Desconocido"
+
+-- 1. Escanear un radio de 1 casilla alrededor del jugador buscando un contenedor
+for x = px - 1, px + 1 do
+    for y = py - 1, py + 1 do
+        local sq = cell:getGridSquare(x, y, pz)
+        if sq then
+            local objects = sq:getObjects()
+            for i = 0, objects:size() - 1 do
+                local obj = objects:get(i)
+                -- Verificamos si el objeto en el mundo tiene un inventario (como en ItemPickerJava)
+                if obj:getContainer() then
+                    targetContainer = obj:getContainer()
+                    containerType = targetContainer:getType()
+                    
+                    -- Si quieres forzar que SOLO sea un tacho de basura, descomenta las siguientes líneas:
+                    -- if containerType == "bin" then
+                    --     break
+                    -- else
+                    --     targetContainer = nil
+                    -- end
+                    break
+                end
+            end
+        end
+        if targetContainer then break end
+    end
+    if targetContainer then break end
+end
+
+-- 2. Si encontramos un contenedor, inyectamos el ítem
+if targetContainer then
+    -- Añadimos el item físico al contenedor (análogo a container.AddItem en Java)
+    local item = targetContainer:AddItem("Base.VHS_Animado")
+    
+    local recordedMedia = getZomboidRadio():getRecordedMedia()
+    local mediaData = recordedMedia:getMediaData("boondocks")
+
+    if mediaData and item then
+        item:setRecordedMediaData(mediaData)
+        local nombrePelicula = tostring(mediaData:getTranslatedItemDisplayName())
+        print("[TEST-VHS] VHS inyectado en el contenedor (" .. containerType .. "): " .. nombrePelicula)
+        player:setHaloNote("VHS en contenedor: " .. containerType, 0, 255, 0, 300)
+    else
+        print("[TEST-VHS] ERROR: No se encontro el Recorded Media o el Item no existe.")
+        player:setHaloNote("ERROR: VHS no generado", 255, 0, 0, 300)
+    end
+else
+    player:setHaloNote("ERROR: Acercate a un contenedor", 255, 0, 0, 300)
+    print("[TEST-VHS] No se encontraron contenedores en un radio de 1 casilla.")
+end
+
+
+
+
+
+
+
+
+
+--. SISTEMA DE APARECIÓN DINÁMICO
+
+-- =============================================================================
+-- SISTEMA DE APARICION DINAMICO PARA VHS ANIMADOS
+-- =============================================================================
+
+-- 1. Configuracion de Probabilidades y Contenedores
+local PROBABILIDAD_SPAWN = 3 -- 3% de probabilidad de aparecer por cada contenedor valido
+
+-- Lista de contenedores donde tiene sentido que aparezca una cinta VHS
+local CONTENEDORES_VALIDOS = {
+    ["bin"] = true,           -- Basureros generales
+    ["crate"] = true,         -- Cajas de madera
+    ["sidetable"] = true,     -- Mesitas de noche
+    ["shelves"] = true,       -- Estanterias
+    ["wardrobe"] = true,      -- Armarios
+    ["displaycase"] = true,   -- Vitrinas (como en tiendas)
+    ["desk"] = true,          -- Escritorios
+    ["filingcabinet"] = true  -- Archivadores
+}
+
+-- Lista con los IDs exactos de las peliculas que registraste en RecMedia
+local PELICULAS_DISPONIBLES = {
+    "boondocks",
+    "noticiero",
+    "walkin",
+    "trailer",
+    "ricardo_milos",
+    "joven",
+    "rickroll"
+}
+
+-- =============================================================================
+-- 2. Funcion Principal de Inyeccion
+-- =============================================================================
+local function GenerarVHSAleatorio(roomName, containerType, container)
+    -- Verificamos si el tipo de contenedor esta en nuestra lista permitida
+    if CONTENEDORES_VALIDOS[containerType] then
+        
+        -- Lanzamos un dado del 0 al 99. Si cae por debajo de nuestra probabilidad, spawnea.
+        if ZombRand(100) < PROBABILIDAD_SPAWN then
+            
+            -- Generamos el item fisico en el contenedor
+            local item = container:AddItem("Base.VHS_Animado")
+            
+            if item then
+                -- Elegimos una pelicula al azar de nuestra tabla
+                local randomIndice = ZombRand(#PELICULAS_DISPONIBLES) + 1
+                local peliculaElegida = PELICULAS_DISPONIBLES[randomIndice]
+                
+                -- Buscamos los datos de la pelicula en la radio del juego
+                local recordedMedia = getZomboidRadio():getRecordedMedia()
+                local mediaData = recordedMedia:getMediaData(peliculaElegida)
+                
+                -- Se la asignamos al VHS recien creado
+                if mediaData then
+                    item:setRecordedMediaData(mediaData)
+                    
+                    -- Mensaje en consola para que sepas exactamente donde se genero (util para testear)
+                    print(string.format("[ModVHS-Spawner] EXITO: Generado '%s' en un(a) %s dentro de la habitacion '%s'.", 
+                          tostring(mediaData:getTranslatedItemDisplayName()), 
+                          tostring(containerType), 
+                          tostring(roomName)))
+                end
+            end
+        end
+    end
+end
+
+-- =============================================================================
+-- 3. Conectar la funcion al motor del juego
+-- =============================================================================
+-- Este evento se dispara nativamente cada vez que el juego llena un contenedor inexplorado
+Events.OnFillContainer.Add(GenerarVHSAleatorio)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--. CONTENEDORES NOMBRES
+local tiposContenedores = {}
+local tiposHabitaciones = {}
+local totalContenedores = 0
+local totalHabitaciones = 0
+
+print("==================================================")
+print("[ESCANER DE BASE DE DATOS] Extrayendo registros de Zomboid...")
+print("==================================================")
+
+-- Leemos la tabla maestra donde el juego registra todo el botin
+if SuburbsDistributions then
+    for roomName, containers in pairs(SuburbsDistributions) do
+        
+        -- Guardamos el nombre de la habitacion/zona (Ej: kitchen, gunstore, aesthetic)
+        if not tiposHabitaciones[roomName] then
+            tiposHabitaciones[roomName] = true
+            totalHabitaciones = totalHabitaciones + 1
+        end
+        
+        -- Exploramos los muebles dentro de esa habitacion
+        if type(containers) == "table" then
+            for containerName, data in pairs(containers) do
+                -- Guardamos el nombre del mueble/contenedor (Ej: bin, counter, metal_shelves)
+                if not tiposContenedores[containerName] and type(data) == "table" then
+                    tiposContenedores[containerName] = true
+                    totalContenedores = totalContenedores + 1
+                end
+            end
+        end
+    end
+end
+
+-- IMPRIMIR RESULTADOS
+print("--- 1. TODOS LOS MUEBLES/CONTENEDORES (" .. totalContenedores .. " en total) ---")
+local contList = {}
+for c, _ in pairs(tiposContenedores) do table.insert(contList, c) end
+table.sort(contList)
+for _, c in ipairs(contList) do
+    print("- " .. c)
+end
+
+print("\n--- 2. TODAS LAS HABITACIONES/ZONAS (" .. totalHabitaciones .. " en total) ---")
+local roomList = {}
+for r, _ in pairs(tiposHabitaciones) do table.insert(roomList, r) end
+table.sort(roomList)
+for _, r in ipairs(roomList) do
+    print("- " .. r)
+end
+
+print("==================================================")
+print("[ESCANER] Finalizado con exito. Revisa la lista arriba.")
+print("==================================================")
+
+
+
+
+
+
+
+
+
+
+
+
+--. FUNCIONA GENERACIÓN
+local player = getPlayer()
+local px = math.floor(player:getX())
+local py = math.floor(player:getY())
+local pz = math.floor(player:getZ())
+local cell = getWorld():getCell()
+
+local radio = 20 -- Radio de busqueda en casillas
+local vhsGenerados = 0
+
+local PELICULAS_DISPONIBLES = {
+    "boondocks", "noticiero", "walkin", "trailer", 
+    "ricardo_milos", "joven", "rickroll"
+}
+
+print("==================================================")
+print("[TEST-MASIVO] Escaneando basureros en radio de " .. radio)
+
+for x = px - radio, px + radio do
+    for y = py - radio, py + radio do
+        local sq = cell:getGridSquare(x, y, pz)
+        if sq then
+            local objects = sq:getObjects()
+            for i = 0, objects:size() - 1 do
+                local obj = objects:get(i)
+                
+                if obj:getContainer() then
+                    local container = obj:getContainer()
+                    local containerType = container:getType()
+                    
+                    -- Filtramos solo basureros
+                    if containerType == "bin" or containerType == "dumpster" then
+                        
+                        -- Evitar inyectar infinitamente en el mismo tacho al testear
+                        local modData = obj:getModData()
+                        if not modData.test_vhs_generado then
+                            modData.test_vhs_generado = true
+                            
+                            local item = container:AddItem("Base.VHS_Animado")
+                            if item then
+                                local randomIndice = ZombRand(#PELICULAS_DISPONIBLES) + 1
+                                local peliculaElegida = PELICULAS_DISPONIBLES[randomIndice]
+                                
+                                local recordedMedia = getZomboidRadio():getRecordedMedia()
+                                local mediaData = recordedMedia:getMediaData(peliculaElegida)
+                                
+                                if mediaData then
+                                    item:setRecordedMediaData(mediaData)
+                                    vhsGenerados = vhsGenerados + 1
+                                    print("-> VHS '" .. tostring(mediaData:getTranslatedItemDisplayName()) .. "' inyectado en " .. containerType)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+print("[TEST-MASIVO] Total de VHS generados: " .. vhsGenerados)
+print("==================================================")
+
+if vhsGenerados > 0 then
+    player:setHaloNote("Generados " .. vhsGenerados .. " VHS en basureros cercanos!", 0, 255, 0, 400)
+else
+    player:setHaloNote("No hay basureros nuevos en el area.", 255, 0, 0, 300)
+end
+
+
+
+
+
+
+
+
+
+
+
+--. GENERADOR FINAL
+
+-- =============================================================================
+-- SISTEMA DE APARICION DINAMICO AVANZADO (CANTIDADES Y RAREZA)
+-- =============================================================================
+
+local PELICULAS_DISPONIBLES = {
+    "boondocks", "noticiero", "walkin", "trailer", 
+    "ricardo_milos", "joven", "rickroll"
+}
+
+-- Agrega aqui los contenedores donde quieres que aparezca
+local CONTENEDORES_VALIDOS = {
+    ["bin"] = true,
+    ["dumpster"] = true,
+    ["crate"] = true,
+    ["shelves"] = true,
+    ["sidetable"] = true,
+    ["wardrobe"] = true,
+    ["displaycase"] = true
+}
+
+-- PROBABILIDAD PRINCIPAL: ¿Que porcentaje de los contenedores validos tendran VHS?
+local PROB_CONTENEDOR_PREMIADO = 100 -- 15% de probabilidad
+
+local function GenerarVHSDinamico(roomName, containerType, container)
+    -- 1. FILTRO DE CONTENEDOR
+    if not CONTENEDORES_VALIDOS[containerType] then return end
+
+    -- 2. ESCUDO ANTI-REPLICACION (Atado al mueble fisico)
+    local parentObject = container:getParent()
+    if not parentObject then return end
+
+    local modData = parentObject:getModData()
+    if modData.vhs_procesado_avanzado then return end
+    modData.vhs_procesado_avanzado = true
+
+    -- 3. PROBABILIDAD DE APARECER (Si el dado cae alto, no generamos nada)
+    -- ZombRand(100) genera un numero del 0 al 99.
+    if ZombRand(100) >= PROB_CONTENEDOR_PREMIADO then
+        return -- No hubo suerte, el contenedor se queda sin nuestras cintas
+    end
+
+    -- 4. DETERMINAR CANTIDAD DE CINTAS
+    local cantidad = 1
+    local tiradaCantidad = ZombRand(100)
+    
+    if tiradaCantidad < 5 then
+        -- 5% de probabilidad de JACKPOT: Aparecen TODAS las peliculas
+        cantidad = #PELICULAS_DISPONIBLES
+    elseif tiradaCantidad < 30 then
+        -- 25% de probabilidad de encontrar un lote (2 o 3 cintas)
+        cantidad = ZombRand(2, 4) -- Retorna 2 o 3
+    else
+        -- 70% de probabilidad de encontrar solo 1 cinta
+        cantidad = 1
+    end
+
+    -- 5. SELECCION ALEATORIA SIN REPETIR
+    -- Hacemos una copia temporal de la lista para ir tachando las que ya salieron
+    local pelisTemp = {}
+    for _, peli in ipairs(PELICULAS_DISPONIBLES) do
+        table.insert(pelisTemp, peli)
+    end
+
+    local recordedMedia = getZomboidRadio():getRecordedMedia()
+    
+    -- Generamos la cantidad de items calculada
+    for i = 1, cantidad do
+        if #pelisTemp == 0 then break end -- Seguro por si acaso
+        
+        -- Elegir una pelicula al azar de las que quedan y sacarla de la lista temporal
+        local rIndex = ZombRand(#pelisTemp) + 1
+        local peliculaElegida = table.remove(pelisTemp, rIndex)
+
+        local item = container:AddItem("Base.VHS_Animado")
+        if item then
+            local mediaData = recordedMedia:getMediaData(peliculaElegida)
+            if mediaData then
+                item:setRecordedMediaData(mediaData)
+                print(string.format("[ModVHS-Spawner] Generado: %s en %s (%d/%d)", 
+                      mediaData:getTranslatedItemDisplayName(), containerType, i, cantidad))
+            end
+        end
+    end
+end
+
+Events.OnFillContainer.Add(GenerarVHSDinamico)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--. GENERADOR POR COORDENADAS
+
+-- =============================================================================
+-- SISTEMA DE APARICION EN COORDENADAS EXACTAS (EASTER EGGS)
+-- =============================================================================
+
+local PELICULAS_DISPONIBLES = {
+    "boondocks", "noticiero", "walkin", "trailer", 
+    "ricardo_milos", "joven", "rickroll"
+}
+
+-- Define aqui las coordenadas (X, Y, Z) exactas del mapa.
+local COORDENADAS_ESPECIALES = {
+    { x = 10613, y = 9312, z = 0 }, -- Coordenada 1 (Ejemplo)
+    { x = 12500, y = 8400, z = 1 }  -- Coordenada 2 (Ejemplo)
+}
+
+local function GenerarVHSEnCoordenada(square)
+    if not square then return end
+
+    local sqX = square:getX()
+    local sqY = square:getY()
+    local sqZ = square:getZ()
+
+    -- 1. VERIFICAR SI ESTAMOS EN LA COORDENADA CORRECTA
+    local esCoordenadaObjetivo = false
+    for _, coord in ipairs(COORDENADAS_ESPECIALES) do
+        if sqX == coord.x and sqY == coord.y and sqZ == coord.z then
+            esCoordenadaObjetivo = true
+            break
+        end
+    end
+
+    if not esCoordenadaObjetivo then return end
+
+    -- 2. ESCUDO ANTI-REPLICACION
+    local modData = square:getModData()
+    if modData.vhs_coordenada_generada then return end
+    modData.vhs_coordenada_generada = true
+
+    -- 3. SELECCIONAR PELICULA ALEATORIA
+    local randomIndice = ZombRand(#PELICULAS_DISPONIBLES) + 1
+    local peliculaElegida = PELICULAS_DISPONIBLES[randomIndice]
+    
+    local recordedMedia = getZomboidRadio():getRecordedMedia()
+    local mediaData = recordedMedia:getMediaData(peliculaElegida)
+    
+    if not mediaData then return end
+
+    -- 4. BUSCAR UN CONTENEDOR EN ESTA CASILLA
+    local targetContainer = nil
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        local obj = objects:get(i)
+        if obj:getContainer() then
+            targetContainer = obj:getContainer()
+            break
+        end
+    end
+
+    -- 5. INYECTAR EL ITEM
+    if targetContainer then
+        -- Si hay un mueble, lo escondemos adentro
+        local item = targetContainer:AddItem("Base.VHS_Animado")
+        if item then
+            item:setRecordedMediaData(mediaData)
+            print(string.format("[ModVHS-Coords] VHS Especial '%s' escondido en un mueble en (%d, %d, %d)", 
+                  tostring(mediaData:getTranslatedItemDisplayName()), sqX, sqY, sqZ))
+        end
+    else
+        -- CORRECCION: En Lua usamos instanceItem para crear de la nada
+        local item = instanceItem("Base.VHS_Animado")
+        if item then
+            item:setRecordedMediaData(mediaData)
+            square:AddWorldInventoryItem(item, 0.5, 0.5, 0.0)
+            print(string.format("[ModVHS-Coords] VHS Especial '%s' tirado en el suelo en (%d, %d, %d)", 
+                  tostring(mediaData:getTranslatedItemDisplayName()), sqX, sqY, sqZ))
+        end
+    end
+end
+
+Events.LoadGridsquare.Add(GenerarVHSEnCoordenada)
